@@ -1,0 +1,27 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #0a0c10;
+  --surface:  #111318;
+  --border:   #1e2230;
+  --accent:   #6ee7f7;
+  --accent2:  #a78bfa;
+  --real:     #4ade80;
+  --fake:     #f87171;
+  --text:     #e8eaf0;
+  --muted:    #6b7280;
+  --font:     'Space Grotesk', sans-serif;
+  --mono:     'JetBrains Mono', monospace;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
