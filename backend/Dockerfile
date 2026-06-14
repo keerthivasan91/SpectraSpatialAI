@@ -1,32 +1,23 @@
-# Use a clean, production-ready Python runtime slim layer
 FROM python:3.13-slim
-
-# Set environment system layer optimizations
-ENV PYTHONUNBUFFERED=1 \
-    PYTHONDONTWRITEBYTECODE=1 \
-    PIP_NO_CACHE_DIR=off \
-    PIP_DISABLE_PIP_VERSION_CHECK=on
 
 WORKDIR /app
 
-# Install system dependencies needed for compiling image utilities and networking tests
+# Install updated, modern system dependencies for image processing and neural rendering
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
-    libgl1-mesa-glx \
+    libgl1 \
+    libglx-mesa0 \
     libglib2.0-0 \
     netcat-openbsd \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && pip install --upgrade pip
 
-# Copy requirements layer first to maximize Docker layer caching compilation speeds
-COPY requirements.txt .
-RUN pip install --upgrade pip && \
-    pip install -r requirements.txt
+# Pull dependencies directly from the backend subdirectory
+COPY backend/requirements.txt .
+RUN pip install -r requirements.txt
 
-# Copy application source code trees
-COPY . .
-
-# Expose FastAPI default network communication port tracking channel
+# Copy backend application data and expose
+COPY backend/ .
 EXPOSE 8000
 
-# Standalone execution runtime entrypoint command line
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
