@@ -1,22 +1,23 @@
 import React from 'react'
-import { ScanSearch } from 'lucide-react'
+import logoFull from '../SpectraSpatial.svg' // <-- Point this to where you saved the first full SVG file
 
 const S = {
   nav: {
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    padding: '1rem 2rem', borderBottom: '1px solid var(--border)',
+    padding: '0.85rem 2rem', borderBottom: '1px solid var(--border)',
     background: 'rgba(10,12,16,0.85)', backdropFilter: 'blur(12px)',
     position: 'sticky', top: 0, zIndex: 50,
   },
   brand: {
-    display: 'flex', alignItems: 'center', gap: '0.6rem',
-    fontWeight: 700, fontSize: '1.1rem', letterSpacing: '-0.02em',
+    display: 'flex', 
+    alignItems: 'center',
+    // Removed the super tight height restriction to let the graphic expand
   },
-  tag: {
-    fontSize: '0.65rem', fontFamily: 'var(--mono)',
-    color: 'var(--accent)', background: 'rgba(110,231,247,0.08)',
-    border: '1px solid rgba(110,231,247,0.2)',
-    padding: '0.2rem 0.5rem', borderRadius: '4px', letterSpacing: '0.05em',
+  logo: {
+    width: '250px', // Explicit width gives the vector graphic real estate to breathe
+    height: 'auto',  // Auto height maintains the exact mathematical proportions
+    display: 'block',
+    margin: '-4px 0', // Slight negative margin pulls it tight if your nav padding is tall
   },
   tabs: { display: 'flex', gap: '0.25rem' },
   tab: (active) => ({
@@ -28,16 +29,20 @@ const S = {
   }),
 }
 
-// Admin tab is only shown when isAdmin=true
 export default function Navbar({ tab, setTab, isAdmin }) {
   const tabs = isAdmin ? ['Detect', 'Retrain'] : ['Detect']
+
   return (
     <nav style={S.nav}>
       <div style={S.brand}>
-        <ScanSearch size={22} style={{ color: 'var(--accent)' }} />
-        <span>SpectraSpatial</span>
-        <span style={S.tag}>AI DETECTOR</span>
+        {/* The single full SVG handles the icon, brand text, and AI alignment beautifully */}
+        <img 
+          src={logoFull} 
+          alt="SpectraSpatial AI Platform" 
+          style={S.logo} 
+        />
       </div>
+
       <div style={S.tabs}>
         {tabs.map(t => (
           <button key={t} style={S.tab(tab === t)} onClick={() => setTab(t)}>{t}</button>
