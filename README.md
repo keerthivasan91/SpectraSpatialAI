@@ -1,8 +1,26 @@
-# SpectraSpatial AI
+<div align="center">
+  <img src="frontend/src/SpectraSpatial.svg" alt="SpectraSpatial AI Logo" width="480">
+  <br />
+  <p><strong>Dual-stream spatial + FFT analysis with GradCAM visualization and human-in-the-loop manual retraining.</strong></p>
 
-AI vs Real image detector — dual-stream spatial + FFT analysis with GradCAM visualisation and manual retraining.
+  [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com)
+  [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org)
+  [![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org)
+  [![MySQL](https://img.shields.io/badge/MySQL-00000F?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com)
+</div>
 
 ---
+
+## Local Setup
+
+### 1. Clone & place your model
+
+```bash
+git clone <your-repo>
+cd SpectraSpatialAI
+
+# Place your trained model
+cp /path/to/fake_detector_v2.pt backend/weights/model.pt
 
 ## Local Setup
 
