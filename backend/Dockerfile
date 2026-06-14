@@ -13,14 +13,14 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && rm -rf /var/lib/apt/lists/* \
     && pip install --upgrade pip
 
-# 2. Clone your code inside the container where network paths are 100% reliable
-# (This isolates the code pull completely from Dokploy's workspace layer)
+# 2. Clone your code inside the container safely
 RUN git clone https://github.com/keerthivasan91/SpectraSpatialAI.git /tmp/repo && \
     cp -r /tmp/repo/backend/* /app/ && \
     rm -rf /tmp/repo
 
-# 3. Process requirements from the now local flat app layer
-RUN pip install -r requirements.txt
+# 3. Optimized build block: Installs packages WITHOUT storing massive wheel cache files
+RUN pip install --no-cache-dir -r requirements.txt && \
+    rm -rf /root/.cache/pip
 
 EXPOSE 8000
 
