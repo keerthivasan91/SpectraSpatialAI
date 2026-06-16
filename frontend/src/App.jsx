@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Navbar from './components/Navbar'
 import ImageUpload from './components/ImageUpload'
 import ResultPanel from './components/ResultPanel'
@@ -19,6 +19,15 @@ export default function App() {
   // Admin state
   const [adminToken, setAdminToken] = useState('')  // empty = not logged in
   const [showLogin, setShowLogin]   = useState(false)
+
+  // Track window width natively for responsive layout adjustments
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768)
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768)
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   const isAdmin = !!adminToken
 
@@ -48,7 +57,12 @@ export default function App() {
     setTab('Detect')
   }
 
-  const layout = { maxWidth: 900, margin: '0 auto', padding: '2rem 1.5rem' }
+  // Fluid responsive layout margins
+  const layout = { 
+    maxWidth: 900, 
+    margin: '0 auto', 
+    padding: isMobile ? '1.5rem 1rem' : '2rem 1.5rem' 
+  }
 
   // If Retrain tab is clicked while not admin → show login
   const handleTabChange = (t) => {
@@ -70,10 +84,10 @@ export default function App() {
 
         {/* Detect tab */}
         {!showLogin && tab === 'Detect' && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', width: '100%' }}>
             <div style={{ marginBottom: '0.5rem' }}>
               <h1 style={{
-                fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 700,
+                fontSize: 'clamp(1.5rem, 4vw, 2rem)', fontWeight: 700,
                 letterSpacing: '-0.03em', marginBottom: '0.4rem',
               }}>
                 Is this image{' '}
@@ -84,8 +98,30 @@ export default function App() {
                   AI-generated
                 </span>?
               </h1>
-              <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>
+              <p style={{ color: 'var(--muted)', fontSize: '0.9rem', lineHeight: '1.4' }}>
                 Upload any image — SpectraSpatial analyses both spatial and frequency-domain signals.
+              </p><br></br>
+              <p>
+  Note: The underlying model is exclusively trained on human faces.
+</p>
+              
+              {/* Dynamic Warning disclaimer matching your training requirements */}
+              <p style={{ 
+                marginTop: '0.75rem', 
+                fontSize: '0.78rem', 
+                fontWeight: '500',
+                color: 'rgb(245, 158, 11)', 
+                background: 'rgba(245, 158, 11, 0.1)', 
+                border: '1px solid rgba(245, 158, 11, 0.2)',
+                borderRadius: '6px',
+                padding: '0.5rem 0.75rem',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                width: '100%',
+                boxSizing: 'border-box'
+              }}>
+                ⚠️ <span>Note: The underlying model is exclusively trained on human faces.</span>
               </p>
             </div>
 
@@ -98,12 +134,13 @@ export default function App() {
                 background: 'rgba(248,113,113,0.08)', border: '1px solid rgba(248,113,113,0.25)',
                 color: 'var(--fake)', fontSize: '0.9rem',
                 display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                gap: '1rem'
               }}>
-                <span>{errorMsg}</span>
+                <span style={{ wordBreak: 'break-word' }}>{errorMsg}</span>
                 <button onClick={reset} style={{
                   background: 'none', border: 'none', color: 'var(--fake)',
                   cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.3rem',
-                  fontFamily: 'var(--font)', fontSize: '0.85rem',
+                  fontFamily: 'var(--font)', fontSize: '0.85rem', flexShrink: 0
                 }}>
                   <RotateCcw size={14} /> Retry
                 </button>
@@ -113,18 +150,21 @@ export default function App() {
             {status === 'done' && result && (
               <div style={{
                 display: 'grid',
-                gridTemplateColumns: 'minmax(0,1.4fr) minmax(0,1fr)',
-                gap: '1.25rem', alignItems: 'start',
+                // Stacks into 1 column on mobile, drops into two panels on desktop
+                gridTemplateColumns: isMobile ? '1fr' : 'minmax(0,1.4fr) minmax(0,1fr)',
+                gap: '1.25rem', 
+                alignItems: 'start',
+                width: '100%'
               }}>
                 <GradCAMView original={result.gradcam_original} heatmap={result.gradcam_heatmap} />
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
                   <ResultPanel label={result.label} p_real={result.p_real} confidence={result.confidence} />
                   <FeedbackButton predictionId={result.prediction_id} currentLabel={result.label} />
                   <button onClick={reset} style={{
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem',
-                    padding: '0.6rem', borderRadius: '8px', border: '1px solid var(--border)',
+                    padding: '0.75rem', borderRadius: '8px', border: '1px solid var(--border)',
                     background: 'transparent', color: 'var(--muted)', cursor: 'pointer',
-                    fontFamily: 'var(--font)', fontSize: '0.85rem',
+                    fontFamily: 'var(--font)', fontSize: '0.85rem', width: '100%'
                   }}>
                     <RotateCcw size={14} /> Analyse another image
                   </button>
@@ -149,12 +189,12 @@ export default function App() {
 
         {/* Retrain tab — admin only */}
         {!showLogin && tab === 'Retrain' && isAdmin && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '100%' }}>
             <div>
               <h1 style={{ fontSize: '1.5rem', fontWeight: 700, letterSpacing: '-0.03em', marginBottom: '0.3rem' }}>
                 Manual Retraining
               </h1>
-              <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>
+              <p style={{ color: 'var(--muted)', fontSize: '0.9rem', lineHeight: '1.4' }}>
                 Fine-tunes on new user-flagged samples only. Previously retrained samples are excluded automatically.
               </p>
             </div>
