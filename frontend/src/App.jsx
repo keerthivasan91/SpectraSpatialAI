@@ -101,9 +101,6 @@ export default function App() {
               <p style={{ color: 'var(--muted)', fontSize: '0.9rem', lineHeight: '1.4' }}>
                 Upload any image — SpectraSpatial analyses both spatial and frequency-domain signals.
               </p><br></br>
-              <p>
-  Note: The underlying model is exclusively trained on human faces.
-</p>
               
               {/* Dynamic Warning disclaimer matching your training requirements */}
               <p style={{ 
