@@ -12,8 +12,8 @@ from config import settings
 # REAL  if P(REAL) >= 0.60
 # UNCERTAIN otherwise
 
-FAKE_THRESHOLD = 0.40
-REAL_THRESHOLD = 0.60
+FAKE_THRESHOLD = 0.5380
+REAL_THRESHOLD = 0.9156
 
 _MEAN = torch.tensor([0.485, 0.456, 0.406]).view(1, 3, 1, 1)
 _STD  = torch.tensor([0.229, 0.224, 0.225]).view(1, 3, 1, 1)
