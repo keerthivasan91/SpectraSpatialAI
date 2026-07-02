@@ -1,18 +1,16 @@
-version: "3.9"
-
 services:
   mysql:
-  image: mysql:8.0
-  restart: always
-  environment:
-    MYSQL_ROOT_PASSWORD: root
-    MYSQL_DATABASE: spectra_spatial
-    MYSQL_USER: spectra_user
-    MYSQL_PASSWORD: root
-  ports:
-    - "3306:3306"
-  volumes:
-    - mysql_data:/var/lib/mysql
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: spectra_spatial
+      MYSQL_USER: spectra_user
+      MYSQL_PASSWORD: root
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
@@ -28,7 +26,8 @@ services:
       - ./backend/weights:/app/weights
       - ./backend/uploads:/app/uploads
       - ./backend/feedback_samples:/app/feedback_samples
-    env_file: .env
+    env_file:
+      - .env
     depends_on:
       mysql:
         condition: service_healthy
@@ -36,6 +35,7 @@ services:
 
   frontend:
     build: ./frontend
+    restart: always
     ports:
       - "5173:80"
     depends_on:
