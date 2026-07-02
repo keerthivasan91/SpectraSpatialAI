@@ -1,5 +1,5 @@
 # Tells pip to pull lightweight CPU binaries instead of 4GB CUDA GPU layers
---index-url https://download.pytorch.org/whl/cpu
+--extra-index-url https://download.pytorch.org/whl/cpu
 
 fastapi==0.115.0
 uvicorn[standard]==0.30.6
