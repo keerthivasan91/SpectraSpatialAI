@@ -2,15 +2,17 @@ version: "3.9"
 
 services:
   mysql:
-    image: mysql:8.0
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: yourpassword
-      MYSQL_DATABASE: spectra_spatial
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
+  image: mysql:8.0
+  restart: always
+  environment:
+    MYSQL_ROOT_PASSWORD: root
+    MYSQL_DATABASE: spectra_spatial
+    MYSQL_USER: spectra_user
+    MYSQL_PASSWORD: root
+  ports:
+    - "3306:3306"
+  volumes:
+    - mysql_data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
