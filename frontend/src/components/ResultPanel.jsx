@@ -29,7 +29,7 @@ export default function ResultPanel({ label, p_real, confidence }) {
   const cfg = LABEL_CONFIG[label] || LABEL_CONFIG['Uncertain']
   const Icon = cfg.icon
 
-  // P(REAL) gauge — bar fills left (0) to right (1), threshold markers at 0.40 and 0.60
+  // P(REAL) gauge — bar fills left (0) to right (1), threshold markers at 0.5380 and 0.9156
   const pRealPct = (p_real * 100).toFixed(1)
 
   return (
@@ -80,15 +80,15 @@ export default function ResultPanel({ label, p_real, confidence }) {
             transition: 'width 0.8s cubic-bezier(0.4,0,0.2,1)',
           }} />
           {/* Threshold markers */}
-          <div style={{ position: 'absolute', left: '40%', top: -3, width: 2, height: 14, background: 'var(--fake)', borderRadius: 1 }} title="FAKE threshold 0.40" />
-          <div style={{ position: 'absolute', left: '60%', top: -3, width: 2, height: 14, background: 'var(--real)', borderRadius: 1 }} title="REAL threshold 0.60" />
+          <div style={{ position: 'absolute', left: '53.8%', top: -3, width: 2, height: 14, background: 'var(--fake)', borderRadius: 1 }} title="FAKE threshold 0.5380" />
+          <div style={{ position: 'absolute', left: '91.56%', top: -3, width: 2, height: 14, background: 'var(--real)', borderRadius: 1 }} title="REAL threshold 0.9156" />
         </div>
 
         {/* Threshold labels */}
         <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '0.35rem', position: 'relative' }}>
-          <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', color: 'var(--fake)' }}>0.40</span>
+          <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', color: 'var(--fake)' }}>0.5380</span>
           <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', color: 'var(--muted)', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>uncertain</span>
-          <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', color: 'var(--real)' }}>0.60</span>
+          <span style={{ fontFamily: 'var(--mono)', fontSize: '0.65rem', color: 'var(--real)' }}>0.9156</span>
         </div>
       </div>
 
