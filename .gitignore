@@ -77,8 +77,6 @@ __pycache__/
 dist/
 
 
-*package-lock.json
-*package.json
 *pnpm-lock.yaml
 *node_modules
 
