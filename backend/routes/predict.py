@@ -12,7 +12,7 @@ from schemas import PredictionResponse
 from model import predict
 from gradcam import generate_gradcam
 from config import settings
-from main import limiter
+from limiter import limiter
 
 router = APIRouter(prefix="/predict", tags=["Prediction"])
 
@@ -21,23 +21,23 @@ ALLOWED_CONTENT_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
 
 
 @router.post("", response_model=PredictionResponse)
-@limiter.limit("10/minute")   # max 10 predictions per IP per minute
+@limiter.limit("10/minute")
 async def predict_image(
     request: Request,
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
 ):
-    # 1. Strict content-type check (not just startswith)
+    # 1. Strict content-type check
     if file.content_type not in ALLOWED_CONTENT_TYPES:
         raise HTTPException(400, "Only JPEG, PNG, WEBP, or GIF images are accepted.")
 
     contents = await file.read()
 
-    # 2. File size cap — reject before doing any processing
+    # 2. File size cap
     if len(contents) > MAX_FILE_SIZE:
         raise HTTPException(413, "File too large. Maximum allowed size is 5MB.")
 
-    # 3. Actually validate it opens as an image (catches disguised files)
+    # 3. Validate it actually opens as an image (catches disguised files)
     try:
         image = Image.open(io.BytesIO(contents)).convert("RGB")
     except Exception:
