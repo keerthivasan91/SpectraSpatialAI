@@ -7,8 +7,8 @@ services:
       MYSQL_DATABASE: spectra_spatial
       MYSQL_USER: spectra_user
       MYSQL_PASSWORD: root
-    ports:
-      - "3306:3306"
+    expose:
+      - "3306"        # internal only — not reachable from outside the VM
     volumes:
       - mysql_data:/var/lib/mysql
     healthcheck:
